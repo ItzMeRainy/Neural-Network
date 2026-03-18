@@ -26,7 +26,7 @@ public:
     int getRows() const { return rows; };
     int getCols() const { return cols; };
     double& at(int i, int j) { return data[i*cols + j]; };
-    const double& at(int i, int j) const { return data[i*cols + j]; };
+    double at(int i, int j) const { return data[i*cols + j]; };
 
     void print() const;
     void randomize(double min, double max);
