@@ -9,7 +9,7 @@ matrix::matrix()
     data = nullptr;
 }
 
-matrix::matrix(int rows, int cols, bool randomize = false, double min = -0.5, double max = 0.5)
+matrix::matrix(int rows, int cols, bool randomize, double min, double max)
 {
     this->rows = rows;
     this->cols = cols;
@@ -32,6 +32,17 @@ matrix::matrix(const matrix &copyMatrix)
         data[idx] = copyMatrix.data[idx];
 }
 
+matrix::matrix(matrix &&moveMatrix) noexcept
+{
+    this->rows = moveMatrix.rows;
+    this->cols = moveMatrix.cols;
+    this->data = moveMatrix.data;
+
+    moveMatrix.rows = 0;
+    moveMatrix.cols = 0;
+    moveMatrix.data = nullptr;
+}
+
 matrix::~matrix()
 {
     delete[] data;
@@ -50,6 +61,23 @@ matrix& matrix::operator=(const matrix &copyMatrix)
     for (int idx = 0; idx < rows * cols; idx++)
         data[idx] = copyMatrix.data[idx];
     
+    return *this;
+}
+
+matrix& matrix::operator=(matrix &&moveMatrix) noexcept
+{
+    if (this == &moveMatrix) return *this;
+
+    delete[] data;
+
+    this->rows = moveMatrix.rows;
+    this->cols = moveMatrix.cols;
+    this->data = moveMatrix.data;
+
+    moveMatrix.rows = 0;
+    moveMatrix.cols = 0;
+    moveMatrix.data = nullptr;
+
     return *this;
 }
 
@@ -89,7 +117,7 @@ matrix matrix::operator*(const matrix &operandMatrix) const
     return result;
 }
 
-matrix matrix::operator*(int scalar) const
+matrix matrix::operator*(double scalar) const
 {
     matrix result(this->rows, this->cols);
 
@@ -114,6 +142,13 @@ void matrix::applyFunction(double (*func)(double x))
 {
     for (int idx = 0; idx < this->rows * this->cols; idx++)
         this->data[idx] = func(this->data[idx]);
+}
+
+matrix matrix::mapFunction(double (*func)(double x)) const
+{
+    matrix copiedMatrix = *this;
+    copiedMatrix.applyFunction(func);
+    return copiedMatrix;
 }
 
 void matrix::print() const

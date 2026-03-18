@@ -9,12 +9,15 @@ public:
     matrix();
     matrix(int rows, int cols, bool randomize = false, double min = -0.5, double max = 0.5);
     matrix(const matrix &copyMatrix);
+    matrix(matrix &&moveMatrix) noexcept;
     ~matrix();
 
     matrix& operator=(const matrix &copyMatrix);
+    matrix& operator=(matrix &&moveMatrix) noexcept;
+
     matrix operator+(const matrix &operandMatrix) const;
     matrix operator*(const matrix &operandMatrix) const;
-    matrix operator*(int scalar) const;
+    matrix operator*(double scalar) const;
     matrix transpose() const;
 
     void applyFunction(double (*func)(double x));
