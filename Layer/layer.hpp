@@ -10,10 +10,13 @@ class Layer
     Matrix bias;
 
 public:
-    Layer(int numOfInputs, int numOfNeurons, double (*activationFunc)(double x));
-
-    void printWeights() const { weights.print(); };
-    void printBias() const { bias.print(); };
+    Layer(int numOfNeurons, int numOfInputs, double (*activationFunc)(double x));
 
     Matrix forward(const Matrix &input) const;
+
+    void printWeights() const { weights.print(); }
+    void printBias() const { bias.print(); }
+
+    int getOutputRows() const { return numOfNeurons; }
+    int getOutputCols() const { return numOfInputs; }
 };

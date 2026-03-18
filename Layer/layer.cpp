@@ -1,6 +1,6 @@
 #include "layer.hpp"
 
-Layer::Layer(int numOfInputs, int numOfNeurons, double (*activationFunc)(double x))
+Layer::Layer(int numOfNeurons, int numOfInputs, double (*activationFunc)(double x))
 {
     this->numOfInputs = numOfInputs;
     this->numOfNeurons = numOfNeurons;
