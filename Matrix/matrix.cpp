@@ -2,14 +2,14 @@
 #include <iostream>
 #include <random>
 
-matrix::matrix()
+Matrix::Matrix()
 {
     rows = 0;
     cols = 0;
     data = nullptr;
 }
 
-matrix::matrix(int rows, int cols, bool randomize, double min, double max)
+Matrix::Matrix(int rows, int cols, bool randomize, double min, double max)
 {
     this->rows = rows;
     this->cols = cols;
@@ -22,7 +22,7 @@ matrix::matrix(int rows, int cols, bool randomize, double min, double max)
             data[idx] = 0;
 }
 
-matrix::matrix(const matrix &copyMatrix)
+Matrix::Matrix(const Matrix &copyMatrix)
 {
     this->rows = copyMatrix.rows;
     this->cols = copyMatrix.cols;
@@ -32,7 +32,7 @@ matrix::matrix(const matrix &copyMatrix)
         data[idx] = copyMatrix.data[idx];
 }
 
-matrix::matrix(matrix &&moveMatrix) noexcept
+Matrix::Matrix(Matrix &&moveMatrix) noexcept
 {
     this->rows = moveMatrix.rows;
     this->cols = moveMatrix.cols;
@@ -43,12 +43,12 @@ matrix::matrix(matrix &&moveMatrix) noexcept
     moveMatrix.data = nullptr;
 }
 
-matrix::~matrix()
+Matrix::~Matrix()
 {
     delete[] data;
 }
 
-matrix& matrix::operator=(const matrix &copyMatrix)
+Matrix& Matrix::operator=(const Matrix &copyMatrix)
 {
     if (this == &copyMatrix) return *this;
 
@@ -64,7 +64,7 @@ matrix& matrix::operator=(const matrix &copyMatrix)
     return *this;
 }
 
-matrix& matrix::operator=(matrix &&moveMatrix) noexcept
+Matrix& Matrix::operator=(Matrix &&moveMatrix) noexcept
 {
     if (this == &moveMatrix) return *this;
 
@@ -81,25 +81,38 @@ matrix& matrix::operator=(matrix &&moveMatrix) noexcept
     return *this;
 }
 
-matrix matrix::operator+(const matrix &operandMatrix) const
+Matrix Matrix::operator+(const Matrix &operandMatrix) const
 {
-    if (this->rows != operandMatrix.getRows() || this->cols != operandMatrix.getCols())
+    Matrix result(this->rows, this->cols);
+
+    if (this->rows == operandMatrix.rows && this->cols == operandMatrix.cols)
+    {
+        for (int idx = 0; idx < rows * cols; idx++)
+            result.data[idx] = data[idx] + operandMatrix.data[idx];
+    
+        return result;
+    }
+
+    else if (this->rows == operandMatrix.rows && operandMatrix.cols == 1)
+    {
+        for (int i = 0; i < this->rows; i++)
+            for (int j = 0; j < this->cols; j++)
+            {
+                result.at(i, j) = this->at(i, j) + operandMatrix.at(i, 0);
+            }
+        return result;
+    }
+    
+    else
         throw "MATRIX ERROR: Unable to add matrices (Incompatible dimensions)";
-
-    matrix result(this->rows, this->cols);
-
-    for (int idx = 0; idx < rows * cols; idx++)
-        result.data[idx] = data[idx] + operandMatrix.data[idx];
-
-    return result;
 }
 
-matrix matrix::operator*(const matrix &operandMatrix) const
+Matrix Matrix::operator*(const Matrix &operandMatrix) const
 {
     if (this->cols != operandMatrix.rows)
         throw "MATRIX ERROR: Unable to multiply matrices (Incompatible dimensions)";
 
-    matrix result(this->rows, operandMatrix.cols);
+    Matrix result(this->rows, operandMatrix.cols);
 
     for (int i = 0; i < this->rows; i++)
     {
@@ -117,9 +130,9 @@ matrix matrix::operator*(const matrix &operandMatrix) const
     return result;
 }
 
-matrix matrix::operator*(double scalar) const
+Matrix Matrix::operator*(double scalar) const
 {
-    matrix result(this->rows, this->cols);
+    Matrix result(this->rows, this->cols);
 
     for (int idx = 0; idx < rows * cols; idx++)
         result.data[idx] = scalar * data[idx];
@@ -127,9 +140,9 @@ matrix matrix::operator*(double scalar) const
     return result;
 }
 
-matrix matrix::transpose() const
+Matrix Matrix::transpose() const
 {
-    matrix transposed(this->cols, this->rows);
+    Matrix transposed(this->cols, this->rows);
 
     for (int i = 0; i < this->rows; i++)
         for (int j = 0; j < this->cols; j++)
@@ -138,20 +151,20 @@ matrix matrix::transpose() const
     return transposed;
 }
 
-void matrix::applyFunction(double (*func)(double x))
+void Matrix::applyFunction(double (*func)(double x))
 {
     for (int idx = 0; idx < this->rows * this->cols; idx++)
         this->data[idx] = func(this->data[idx]);
 }
 
-matrix matrix::mapFunction(double (*func)(double x)) const
+Matrix Matrix::mapFunction(double (*func)(double x)) const
 {
-    matrix copiedMatrix = *this;
+    Matrix copiedMatrix = *this;
     copiedMatrix.applyFunction(func);
     return copiedMatrix;
 }
 
-void matrix::print() const
+void Matrix::print() const
 {
     for (int i = 0; i < this->rows; i++)
     {
@@ -167,7 +180,7 @@ void matrix::print() const
     }
 }
 
-void matrix::randomize(double min, double max)
+void Matrix::randomize(double min, double max)
 {
     static std::mt19937 gen(std::random_device{}());
     std::uniform_real_distribution<> dis(min, max);

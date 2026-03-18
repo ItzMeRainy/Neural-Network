@@ -1,27 +1,27 @@
 #pragma once
 
-class matrix
+class Matrix
 {
     double* data;
     int rows, cols;
 
 public:
-    matrix();
-    matrix(int rows, int cols, bool randomize = false, double min = -0.5, double max = 0.5);
-    matrix(const matrix &copyMatrix);
-    matrix(matrix &&moveMatrix) noexcept;
-    ~matrix();
+    Matrix();
+    Matrix(int rows, int cols, bool randomize = false, double min = -0.5, double max = 0.5);
+    Matrix(const Matrix &copyMatrix);
+    Matrix(Matrix &&moveMatrix) noexcept;
+    ~Matrix();
 
-    matrix& operator=(const matrix &copyMatrix);
-    matrix& operator=(matrix &&moveMatrix) noexcept;
+    Matrix& operator=(const Matrix &copyMatrix);
+    Matrix& operator=(Matrix &&moveMatrix) noexcept;
 
-    matrix operator+(const matrix &operandMatrix) const;
-    matrix operator*(const matrix &operandMatrix) const;
-    matrix operator*(double scalar) const;
-    matrix transpose() const;
+    Matrix operator+(const Matrix &operandMatrix) const;
+    Matrix operator*(const Matrix &operandMatrix) const;
+    Matrix operator*(double scalar) const;
+    Matrix transpose() const;
 
     void applyFunction(double (*func)(double x));
-    matrix mapFunction(double (*func)(double x)) const;
+    Matrix mapFunction(double (*func)(double x)) const;
 
     int getRows() const { return rows; };
     int getCols() const { return cols; };
