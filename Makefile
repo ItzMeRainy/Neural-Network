@@ -1,7 +1,7 @@
 CXX = g++
-CXXFLAGS = -std=c++17 -Wall
+CXXFLAGS = -std=c++17 -Wall -I.
 
-SRC = main.cpp Matrix/matrix.cpp
+SRC = main.cpp Matrix/matrix.cpp Layer/layer.cpp
 OUT = program
 
 all:
