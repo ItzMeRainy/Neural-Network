@@ -8,11 +8,14 @@ class Layer
     double (*activationFunc)(double x);
     Matrix weights;
     Matrix bias;
+    Matrix input;
+    Matrix z;
+    Matrix output;
 
 public:
     Layer(int numOfNeurons, int numOfInputs, double (*activationFunc)(double x));
 
-    Matrix forward(const Matrix &input) const;
+    Matrix forward(const Matrix &input);
 
     void printWeights() const { weights.print(); }
     void printBias() const { bias.print(); }

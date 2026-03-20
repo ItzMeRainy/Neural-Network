@@ -9,7 +9,10 @@ Layer::Layer(int numOfNeurons, int numOfInputs, double (*activationFunc)(double 
     this->activationFunc = activationFunc;
 }
 
-Matrix Layer::forward(const Matrix &input) const
+Matrix Layer::forward(const Matrix &input)
 {
-    return ((weights * input) + bias).mapFunction(activationFunc);
+    this->input = input;
+    this->z = weights * input + bias;
+    this->output = this->z.mapFunction(activationFunc);
+    return this->output;
 }
