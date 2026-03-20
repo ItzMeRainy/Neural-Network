@@ -17,6 +17,6 @@ public:
     void printWeights() const { weights.print(); }
     void printBias() const { bias.print(); }
 
-    int getOutputRows() const { return numOfNeurons; }
-    int getOutputCols() const { return numOfInputs; }
+    int getNumOfNeurons() const { return numOfNeurons; }
+    int getNumOfInputs() const { return numOfInputs; }
 };
