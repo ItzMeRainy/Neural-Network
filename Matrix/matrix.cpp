@@ -130,7 +130,7 @@ Matrix Matrix::operator-(const Matrix &operandMatrix) const
     }
     
     else
-        throw std::runtime_error("MATRIX ERROR: Unable to add matrices (Incompatible dimensions)");
+        throw std::runtime_error("MATRIX ERROR: Unable to subtract matrices (Incompatible dimensions)");
 }
 
 Matrix Matrix::operator*(const Matrix &operandMatrix) const
