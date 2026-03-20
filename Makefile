@@ -1,7 +1,7 @@
 CXX = g++
 CXXFLAGS = -std=c++17 -Wall -I.
 
-SRC = main.cpp Matrix/matrix.cpp Layer/layer.cpp NeuralNetwork/NeuralNetwork.cpp
+SRC = main.cpp Matrix/matrix.cpp Layer/layer.cpp NeuralNetwork/NeuralNetwork.cpp Loss/loss.cpp
 OUT = program
 
 all:
