@@ -107,6 +107,32 @@ Matrix Matrix::operator+(const Matrix &operandMatrix) const
         throw std::runtime_error("MATRIX ERROR: Unable to add matrices (Incompatible dimensions)");
 }
 
+Matrix Matrix::operator-(const Matrix &operandMatrix) const
+{
+    Matrix result(this->rows, this->cols);
+
+    if (this->rows == operandMatrix.rows && this->cols == operandMatrix.cols)
+    {
+        for (int idx = 0; idx < rows * cols; idx++)
+            result.data[idx] = data[idx] + operandMatrix.data[idx];
+    
+        return result;
+    }
+
+    else if (this->rows == operandMatrix.rows && operandMatrix.cols == 1)
+    {
+        for (int i = 0; i < this->rows; i++)
+            for (int j = 0; j < this->cols; j++)
+            {
+                result.at(i, j) = this->at(i, j) - operandMatrix.at(i, 0);
+            }
+        return result;
+    }
+    
+    else
+        throw std::runtime_error("MATRIX ERROR: Unable to add matrices (Incompatible dimensions)");
+}
+
 Matrix Matrix::operator*(const Matrix &operandMatrix) const
 {
     if (this->cols != operandMatrix.rows)
@@ -136,6 +162,19 @@ Matrix Matrix::operator*(double scalar) const
 
     for (int idx = 0; idx < rows * cols; idx++)
         result.data[idx] = scalar * data[idx];
+
+    return result;
+}
+
+Matrix Matrix::elementWiseMultiply(const Matrix &operandMatrix) const
+{
+    if (this->rows != operandMatrix.rows || this->cols != operandMatrix.cols)
+        throw std::runtime_error("MATRIX ERROR: Unable to multiply matrices (Incompatible dimensions)");
+
+    Matrix result(this->rows, this->cols);
+
+    for (int idx = 0; idx < rows * cols; idx++)
+        result.data[idx] = this->data[idx] * operandMatrix.data[idx];
 
     return result;
 }

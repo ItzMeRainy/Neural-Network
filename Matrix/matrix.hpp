@@ -16,8 +16,10 @@ public:
     Matrix& operator=(Matrix &&moveMatrix) noexcept;
 
     Matrix operator+(const Matrix &operandMatrix) const;
+    Matrix operator-(const Matrix &operandMatrix) const;
     Matrix operator*(const Matrix &operandMatrix) const;
     Matrix operator*(double scalar) const;
+    Matrix elementWiseMultiply(const Matrix &operandMatrix) const;
     Matrix transpose() const;
 
     void applyFunction(double (*func)(double x));
