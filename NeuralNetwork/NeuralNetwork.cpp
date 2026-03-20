@@ -5,7 +5,7 @@ void NeuralNetwork::addLayer(int numOfNeurons, double (*activationFunc)(double))
 {
     if (!layers.empty())
     {
-        int prevOutputRows = layers.back().getOutputRows();
+        int prevOutputRows = layers.back().getNumOfNeurons();
         layers.push_back(Layer(numOfNeurons, prevOutputRows, activationFunc));
     }
 
@@ -15,13 +15,16 @@ void NeuralNetwork::addLayer(int numOfNeurons, double (*activationFunc)(double))
 
 Matrix NeuralNetwork::forward(const Matrix &input)
 {
-    if (input.getRows() != numOfInputs)
-        throw std::runtime_error("Neural Network Error: Input incompatible with Neural Network.");
-
     Matrix output = input;
+    int batchSize = input.getCols();
 
     for (auto &layer : layers)
+    {
+        if (output.getRows() != layer.getNumOfInputs() || output.getCols() != batchSize)
+            throw std::runtime_error("NEURAL NETWORK ERROR: Incompatible input passed to layer.");
+
         output = layer.forward(output);
+    }
 
     return output;
 }
