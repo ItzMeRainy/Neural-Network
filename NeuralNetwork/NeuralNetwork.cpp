@@ -1,16 +1,16 @@
 #include "NeuralNetwork.hpp"
 #include <iostream>
 
-void NeuralNetwork::addLayer(int numOfNeurons, double (*activationFunc)(double))
+void NeuralNetwork::addLayer(int numOfNeurons, double (*activationFunc)(double), double (*activationFuncDerivative)(double))
 {
     if (!layers.empty())
     {
         int prevOutputRows = layers.back().getNumOfNeurons();
-        layers.push_back(Layer(numOfNeurons, prevOutputRows, activationFunc));
+        layers.push_back(Layer(numOfNeurons, prevOutputRows, activationFunc, activationFuncDerivative));
     }
 
     else
-        layers.push_back(Layer(numOfNeurons, this->numOfInputs, activationFunc));
+        layers.push_back(Layer(numOfNeurons, this->numOfInputs, activationFunc, activationFuncDerivative));
 }
 
 Matrix NeuralNetwork::forward(const Matrix &input)
