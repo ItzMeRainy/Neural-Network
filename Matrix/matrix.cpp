@@ -104,13 +104,13 @@ Matrix Matrix::operator+(const Matrix &operandMatrix) const
     }
     
     else
-        throw "MATRIX ERROR: Unable to add matrices (Incompatible dimensions)";
+        throw std::runtime_error("MATRIX ERROR: Unable to add matrices (Incompatible dimensions)");
 }
 
 Matrix Matrix::operator*(const Matrix &operandMatrix) const
 {
     if (this->cols != operandMatrix.rows)
-        throw "MATRIX ERROR: Unable to multiply matrices (Incompatible dimensions)";
+        throw std::runtime_error("MATRIX ERROR: Unable to multiply matrices (Incompatible dimensions)");
 
     Matrix result(this->rows, operandMatrix.cols);
 

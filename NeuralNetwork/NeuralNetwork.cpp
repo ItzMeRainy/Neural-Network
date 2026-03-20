@@ -1,4 +1,5 @@
 #include "NeuralNetwork.hpp"
+#include <iostream>
 
 void NeuralNetwork::addLayer(int numOfNeurons, double (*activationFunc)(double))
 {
@@ -14,6 +15,9 @@ void NeuralNetwork::addLayer(int numOfNeurons, double (*activationFunc)(double))
 
 Matrix NeuralNetwork::forward(const Matrix &input)
 {
+    if (input.getRows() != numOfInputs)
+        throw std::runtime_error("Neural Network Error: Input incompatible with Neural Network.");
+
     Matrix output = input;
 
     for (auto &layer : layers)

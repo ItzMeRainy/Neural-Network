@@ -11,7 +11,7 @@ public:
     NeuralNetwork(int numOfInputs) : numOfInputs(numOfInputs) {}
 
     void addLayer(int numOfNeurons, double (*activationFunc)(double));
-    Matrix forward(const Matrix &input);
-
     int getNumLayers() const { return layers.size(); }
+
+    Matrix forward(const Matrix &input);
 };
