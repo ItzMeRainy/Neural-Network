@@ -24,6 +24,9 @@ public:
     void printWeights() const { weights.print(); }
     void printBias() const { bias.print(); }
 
+    Matrix getWeights() const { return weights; }
+    Matrix getOutput() const { return output; }
+
     int getNumOfNeurons() const { return numOfNeurons; }
     int getNumOfInputs() const { return numOfInputs; }
 };
