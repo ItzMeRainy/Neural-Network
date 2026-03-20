@@ -19,6 +19,7 @@ public:
     Matrix forward(const Matrix &input);
     Matrix computeDelta(const Matrix &target) const;
     Matrix computeDelta(const Matrix &nextLayerWeights, const Matrix &nextLayerDelta) const;
+    void updateParameters(const Matrix &delta, double learningRate);
 
     void printWeights() const { weights.print(); }
     void printBias() const { bias.print(); }

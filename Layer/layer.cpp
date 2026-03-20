@@ -29,3 +29,21 @@ Matrix Layer::computeDelta(const Matrix &nextLayerWeights, const Matrix &nextLay
 {
     return (nextLayerWeights.transpose() * nextLayerDelta).elementWiseMultiply(z.mapFunction(activationFuncDerivative));
 }
+
+void Layer::updateParameters(const Matrix &delta, double learningRate)
+{
+    Matrix weightGradient = delta * input.transpose();
+    
+    Matrix biasGradient(numOfNeurons, 1);
+    int samples = delta.getCols();
+    for (int row = 0; row < numOfNeurons; row++)
+    {
+        double sum = 0;
+        for (int sample = 0; sample < samples; sample++)
+            sum += delta.at(row, sample);
+        biasGradient.at(row, 0) = sum;
+    }
+
+    weights = weights - (weightGradient * learningRate);
+    bias = bias - (biasGradient * learningRate);
+}
