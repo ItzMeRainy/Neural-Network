@@ -114,7 +114,7 @@ Matrix Matrix::operator-(const Matrix &operandMatrix) const
     if (this->rows == operandMatrix.rows && this->cols == operandMatrix.cols)
     {
         for (int idx = 0; idx < rows * cols; idx++)
-            result.data[idx] = data[idx] + operandMatrix.data[idx];
+            result.data[idx] = data[idx] - operandMatrix.data[idx];
     
         return result;
     }
