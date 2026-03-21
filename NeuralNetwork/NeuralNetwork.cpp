@@ -1,5 +1,7 @@
 #include "NeuralNetwork.hpp"
 #include <iostream>
+#include <Loss/loss.hpp>
+#include <iostream>
 
 void NeuralNetwork::addLayer(int numOfNeurons, double (*activationFunc)(double), double (*activationFuncDerivative)(double))
 {
@@ -27,4 +29,27 @@ Matrix NeuralNetwork::forward(const Matrix &input)
     }
 
     return output;
+}
+
+void NeuralNetwork::backward(const Matrix &target, double learningRate)
+{
+    Matrix delta = layers.back().computeDelta(target);
+    layers.back().updateParameters(delta, learningRate);
+
+    for (int idx = layers.size() - 2; idx >= 0; idx--)
+    {
+        delta = layers[idx].computeDelta(layers[idx + 1].getWeights(), delta);
+        layers[idx].updateParameters(delta, learningRate);
+    }
+}
+
+void NeuralNetwork::train(const Matrix &input, const Matrix &target, double learningRate, int epochs, bool log)
+{
+    for (int epoch = 0; epoch < epochs; epoch++)
+    {
+        Matrix output = forward(input);
+        double loss = meanSquaredError(output, target);
+        if (log) std::cout << "epoch: " << epoch << "; Loss: " << loss << "\n";
+        backward(target, learningRate);
+    }
 }

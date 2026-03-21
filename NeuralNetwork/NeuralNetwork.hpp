@@ -14,4 +14,6 @@ public:
     int getNumLayers() const { return layers.size(); }
 
     Matrix forward(const Matrix &input);
+    void backward(const Matrix &target, double learningRate);
+    void train(const Matrix &input, const Matrix &target, double learningRate, int epochs, bool log = false);
 };
